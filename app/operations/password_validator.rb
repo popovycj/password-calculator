@@ -1,5 +1,3 @@
-require 'trailblazer/operation'
-
 class PasswordValidator < Trailblazer::Operation
   step :validate_file_extension
   step :validate_file_content
@@ -16,7 +14,8 @@ class PasswordValidator < Trailblazer::Operation
 
   def validate_file_content(ctx, file:, **)
     pattern = /^\S [0-9]-[0-9]: \S+$/
-    if File.foreach(file.path).all? { |line| line.match?(pattern) }
+
+    if File.open(file).readlines.size.positive? && File.foreach(file.path).all? { |line| line.match?(pattern) }
       true
     else
       ctx[:error] = 'Invalid file format'
