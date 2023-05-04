@@ -13,7 +13,7 @@ class PasswordValidator < Trailblazer::Operation
   end
 
   def validate_file_content(ctx, file:, **)
-    pattern = /^\S [0-9]-[0-9]: \S+$/
+    pattern = /^\S [0-9]+-[0-9]+: \S+$/
 
     if File.open(file).readlines.size.positive? && File.foreach(file.path).all? { |line| line.match?(pattern) }
       true
